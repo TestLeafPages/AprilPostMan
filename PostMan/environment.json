@@ -1,0 +1,19 @@
+{
+	"id": "33857ae6-2dbc-4b5b-8d8d-2e061af0873a",
+	"name": "ServiceNow_Dev",
+	"values": [
+		{
+			"key": "server",
+			"value": "dev49243.service-now.com",
+			"enabled": true
+		},
+		{
+			"key": "port",
+			"value": "80",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2020-04-18T01:59:33.093Z",
+	"_postman_exported_using": "Postman/7.22.1"
+}

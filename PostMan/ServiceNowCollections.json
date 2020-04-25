@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "2be06854-c3f3-4cd8-a077-340782974cd6",
+		"name": "ServiceNow Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "chaining",
+			"item": [
+				{
+					"name": "Create a new incident",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d8de3620-d882-4e19-8933-77d29f57b520",
+								"exec": [
+									"/* List of java script code to get the response - sysid */",
+									"",
+									"var responseJson = pm.response.json();",
+									"console.log(responseJson);",
+									"",
+									"// Way to print the sys_id",
+									"console.log(responseJson.result.sys_id);",
+									"",
+									"// I need to store the sys_id -> ",
+									"pm.globals.set(\"sys_id\",responseJson.result.sys_id);",
+									"",
+									"pm.test(\"Response time is less than 5s\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\n\t\"short_description\" : \"This is created by Babu using PostMan\",\n\t\"number\": \"INC0010033\",\n\t\"description\" : \"full description\"\n\t\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/{{resources}}/{{table}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{resources}}",
+								"{{table}}"
+							],
+							"query": [
+								{
+									"key": "sysparm_fields",
+									"value": "sys_id",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Create a new incident in ServiceNow"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Incident",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4645e563-fb42-4ae5-90e2-5f76696505f7",
+								"exec": [
+									"pm.test(\"Response time is less than 2s\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/{{resources}}/{{table}}/{{sys_id}}",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{resources}}",
+								"{{table}}",
+								"{{sys_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Incidents",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1772371e-2744-458c-ac2e-5246c61134f7",
+								"exec": [
+									"var resp = pm.response.json();",
+									"",
+									"var count = resp.result.length;",
+									"console.log(count);",
+									"",
+									"var lastNumber = resp.result[count-1].number;",
+									"console.log(lastNumber);",
+									"",
+									"/*",
+									"Random -> Math random -> count (floor) ->",
+									"*/",
+									"",
+									"// I need to store the sys_id -> ",
+									"pm.globals.set(\"sys_id\",resp.result[count-1].sys_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/{{resources}}/{{table}}?sysparm_fields=sys_id,number",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"{{resources}}",
+								"{{table}}"
+							],
+							"query": [
+								{
+									"key": "state",
+									"value": "-5",
+									"disabled": true
+								},
+								{
+									"key": "sysparm_fields",
+									"value": "sys_id,number"
+								},
+								{
+									"key": "type",
+									"value": "emergency",
+									"disabled": true
+								},
+								{
+									"key": "number",
+									"value": "INC0010033",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all the incidents from ServiceNow application"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "wjGB2KUEyc6a",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "251dcae9-00b7-4c3b-9bb8-7ecd8e09d74e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9749582b-828a-4e16-bfab-01f8f78ec0ef",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "2606a073-779b-43a3-beef-c62f3bda6ee6",
+			"key": "table",
+			"value": "incident",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
